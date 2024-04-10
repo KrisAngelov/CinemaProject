@@ -25,7 +25,7 @@ namespace BusinessLayer
         public Showtime Showtime { get; set; }
 
         [ForeignKey("Showtime")]
-        public string ShowtimeId { get; set; }
+        public int ShowtimeId { get; set; }
 
         public ICollection<Seat> Seats { get; set; }
 

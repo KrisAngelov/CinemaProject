@@ -28,7 +28,7 @@ namespace BusinessLayer
         public Movie Movie { get; set; }
 
         [ForeignKey("Movie")]
-        public string MovieId { get; set; }
+        public int MovieId { get; set; }
 
         public Review()
         {

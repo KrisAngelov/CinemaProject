@@ -10,6 +10,8 @@ namespace BusinessLayer
 {
     public class User : IdentityUser
     {
+        public string Password { get; set; }
+
         [Required]
         public string FirstName { get; set; }
         
@@ -17,6 +19,8 @@ namespace BusinessLayer
         public string LastName { get; set; }
 
         public int Age { get; set; }
+
+        public Role Role { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
 
@@ -28,11 +32,15 @@ namespace BusinessLayer
             Tickets = new List<Ticket>();
         }
 
-        public User(string firstName, string lastName, int age)
+        public User(string username, string password, string email, string firstName, string lastName, int age, Role role)
         {
+            UserName = username;
+            Password = password;
+            Email = email;
             FirstName = firstName;
             LastName = lastName;
             Age = age;
+            Role = role;
             Reviews = new List<Review>();
             Tickets = new List<Ticket>();
         }

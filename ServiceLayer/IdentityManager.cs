@@ -21,11 +21,11 @@ namespace ServiceLayer
         }
 
 
-        public async Task<CustomerResultSet> CreateUserAsync(string username, string password, string email, string firstname, string lastname, int age, Role role)
+        public async Task<UserResultSet> CreateUserAsync(string username, string password, string email, string firstname, string lastname, int age, Role role)
         {
 
-            IdentityResultSet<User> resultSet = await _identityContext.CreateUserAsync(username, password, email, firstname, lastname,age, role);
-            return new CustomerResultSet(resultSet.IdentityResult, resultSet.Entity);
+            IdentityResultSet<User> resultSet = await _identityContext.CreateUserAsync(username, password, email, firstname, lastname, age, role);
+            return new UserResultSet(resultSet.IdentityResult, resultSet.Entity);
         }
 
         public async Task<User> LogInUserAsync(string username, string password)

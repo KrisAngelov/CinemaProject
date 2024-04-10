@@ -22,11 +22,11 @@ namespace DataLayer
         {
             try
             {
-                Showtime showtimeFromDb = await dbContext.Showtimes.FindAsync(item.ShowtimeId);
+                Hall hallFromDb = await dbContext.Halls.FindAsync(item.HallId);
 
-                if (showtimeFromDb != null)
+                if (hallFromDb != null)
                 {
-                    item.Showtime = showtimeFromDb;
+                    item.Hall = hallFromDb;
                 }
 
                 Ticket ticketFromDb = await dbContext.Tickets.FindAsync(item.TicketId);
@@ -53,7 +53,7 @@ namespace DataLayer
 
                 if (useNavigationalProperties)
                 {
-                    query = query.Include(a => a.Showtime).Include(a => a.Ticket);
+                    query = query.Include(a => a.Hall).Include(a => a.Ticket);
                 }
 
                 if (isReadOnly)
@@ -77,7 +77,7 @@ namespace DataLayer
 
                 if (useNavigationalProperties)
                 {
-                    query = query.Include(a => a.Showtime).Include(a => a.Showtime);
+                    query = query.Include(a => a.Hall).Include(a => a.Ticket);
                 }
 
                 if (isReadOnly)
@@ -116,15 +116,15 @@ namespace DataLayer
                         seatFromDb.Ticket = item.Ticket;
                     }
 
-                    Showtime showtimeFromDb = await dbContext.Showtimes.FindAsync(item.ShowtimeId);
+                    Hall hallFromDb = await dbContext.Halls.FindAsync(item.HallId);
 
-                    if (showtimeFromDb != null)
+                    if (hallFromDb != null)
                     {
-                        seatFromDb.Showtime = showtimeFromDb;
+                        seatFromDb.Hall = hallFromDb;
                     }
                     else
                     {
-                        seatFromDb.Showtime = item.Showtime;
+                        seatFromDb.Hall = item.Hall;
                     }
                 }
 

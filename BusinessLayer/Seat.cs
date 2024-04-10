@@ -13,41 +13,33 @@ namespace BusinessLayer
         [Key]
         public int Id { get; set; }
 
-        public int Hall { get; set; }
-
         public int Row { get; set; }
 
         public int Column { get; set; }
 
-        public int SeatsCount { get; set; }
+        public SeatAvailability Availability { get; set; }
 
-        public bool Taken { get; set; }
+        public Hall Hall { get; set; }
 
-        [Required]
-        public Showtime Showtime { get; set; }
-
-        [ForeignKey("Showtime")]
-        public string ShowtimeId { get; set; }
+        [ForeignKey("Hall")]
+        public int HallId { get; set; }
 
         public Ticket Ticket { get; set; }
 
         [ForeignKey("Ticket")]
-        public string TicketId { get; set; }
+        public int TicketId { get; set; }
 
         public Seat() 
         {
-            Taken = false;
         }
 
-        public Seat(int hall, int row, int column, int seatscount, Showtime showtime, Ticket ticket = null)
+        public Seat(int row, int column, SeatAvailability availability, Hall hall = null, Ticket ticket = null)
         {
             Hall = hall;
             Row = row;
             Column = column;
-            SeatsCount = seatscount;
-            Showtime = showtime;
+            Availability = availability;
             Ticket = ticket;
-            Taken = false;
         }
     }
 }

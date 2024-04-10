@@ -54,7 +54,7 @@ namespace DataLayer
         {
             try
             {
-                User user = new User(firstname, lastname, age);
+                User user = new User(username, password, email, firstname, lastname, age, role);
                 IdentityResult result = await userManager.CreateAsync(user, password);
 
                 if (!result.Succeeded)

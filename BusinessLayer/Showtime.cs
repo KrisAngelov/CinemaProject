@@ -17,30 +17,33 @@ namespace BusinessLayer
         public Movie Movie { get; set; } 
 
         [ForeignKey("Movie")]
-        public string MovieId { get; set; }
+        public int MovieId { get; set; }
 
         [Required]
         public DateTime StartTime { get; set; }
 
         [Required]
-        public DateTime Endtime { get; set; }
+        public DateTime EndTime { get; set; }
 
-        public ICollection<Seat> Seats { get; set; }
+        [Required]
+        public Hall Hall { get; set; }
+
+        [ForeignKey("Hall")]
+        public int HallId { get; set; }
 
         public ICollection<Ticket> Tickets { get; set; }
 
         public Showtime()
         {
-            Seats = new List<Seat>();
             Tickets = new List<Ticket>();
         }
 
-        public Showtime(Movie movie, DateTime startTime, DateTime endtime)
+        public Showtime(Movie movie, DateTime startTime, DateTime endtime,Hall hall)
         {
             Movie = movie;
             StartTime = startTime;
-            Endtime = endtime;
-            Seats = new List<Seat>();
+            EndTime = endtime;
+            Hall = hall;
             Tickets = new List<Ticket>();
         }
     }

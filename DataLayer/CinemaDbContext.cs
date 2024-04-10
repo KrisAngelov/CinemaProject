@@ -43,6 +43,7 @@ namespace DataLayer
         public DbSet<Showtime> Showtimes { get; set; }
 
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Hall> Halls { get; set; }
 
     }
 }

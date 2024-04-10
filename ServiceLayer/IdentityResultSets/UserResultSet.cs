@@ -1,5 +1,5 @@
-﻿using BusinessLayer;
-using DataLayer;
+﻿using DataLayer;
+using BusinessLayer;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.IdentityResultSets
 {
-    public class CustomerResultSet : IdentityResultSet<User>
+    public class UserResultSet : IdentityResultSet<User>
     {
-        public CustomerResultSet(IdentityResult identityResult, User entity) : base(identityResult, entity)
+        public UserResultSet(IdentityResult identityResult, User entity) : base(identityResult, entity)
         {
         }
-
     }
 }

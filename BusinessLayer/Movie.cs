@@ -19,9 +19,6 @@ namespace BusinessLayer
         [Required]
         public string Director { get; set; }
 
-        [Required]
-        public string[] Actors { get; set; }
-
         public decimal? Rating { get; set; }
 
         public ICollection<Showtime> Showtimes { get; set; }
@@ -35,13 +32,12 @@ namespace BusinessLayer
         }
 
         public Movie(string title, decimal duration, string description, string director, 
-            string[] actors, decimal? rating = 0)
+             decimal? rating = 0)
         {
             Title = title;
             Duration = duration;
             Description = description;
             Director = director;
-            Actors = actors;
             Rating = rating;
             Showtimes = new List<Showtime>();
             Reviews = new List<Review>();

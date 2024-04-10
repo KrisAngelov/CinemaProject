@@ -29,6 +29,13 @@ namespace DataLayer
                     item.Movie = movieFromDb;
                 }
 
+                Hall hallFromDb = await dbContext.Halls.FindAsync(item.HallId);
+
+                if (hallFromDb != null)
+                {
+                    item.Hall = hallFromDb;
+                }
+
                 dbContext.Showtimes.Add(item);
                 await dbContext.SaveChangesAsync();
             }
@@ -46,7 +53,7 @@ namespace DataLayer
 
                 if (useNavigationalProperties)
                 {
-                    query = query.Include(a => a.Movie).Include(a => a.Tickets).Include(a => a.Seats);
+                    query = query.Include(a => a.Movie).Include(a => a.Tickets).Include(a => a.Hall);
                 }
 
                 if (isReadOnly)
@@ -70,7 +77,7 @@ namespace DataLayer
 
                 if (useNavigationalProperties)
                 {
-                    query = query.Include(a => a.Movie).Include(a => a.Tickets).Include(a => a.Seats);
+                    query = query.Include(a => a.Movie).Include(a => a.Tickets).Include(a => a.Hall);
                 }
 
                 if (isReadOnly)
@@ -126,22 +133,16 @@ namespace DataLayer
                     }
                     showtimeFromDb.Tickets = tickets;
 
-                    List<Seat> seats = new List<Seat>(item.Seats.Count);
+                    Hall hallFromDb = await dbContext.Halls.FindAsync(item.HallId);
 
-                    foreach (var seat in item.Seats)
+                    if (hallFromDb != null)
                     {
-                        Seat seatFromDb = await dbContext.Seats.FindAsync(seat.Id);
-
-                        if (seatFromDb is null)
-                        {
-                            seats.Add(seat);
-                        }
-                        else
-                        {
-                            seats.Add(seatFromDb);
-                        }
+                        showtimeFromDb.Hall = hallFromDb;
                     }
-                    showtimeFromDb.Seats = seats;
+                    else
+                    {
+                        showtimeFromDb.Hall = item.Hall;
+                    }
                 }
 
                 await dbContext.SaveChangesAsync();
