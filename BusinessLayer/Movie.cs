@@ -19,6 +19,8 @@ namespace BusinessLayer
         [Required]
         public string Director { get; set; }
 
+        public string? PosterRoute { get; set; }
+
         public decimal? Rating { get; set; }
 
         public ICollection<Showtime> Showtimes { get; set; }
@@ -32,7 +34,7 @@ namespace BusinessLayer
         }
 
         public Movie(string title, decimal duration, string description, string director, 
-             decimal? rating = 0)
+             decimal? rating = 0, string? posterRoute = null)
         {
             Title = title;
             Duration = duration;
@@ -41,6 +43,7 @@ namespace BusinessLayer
             Rating = rating;
             Showtimes = new List<Showtime>();
             Reviews = new List<Review>();
+            PosterRoute = posterRoute;
         }
     }
 }

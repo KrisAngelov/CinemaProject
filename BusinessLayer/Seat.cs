@@ -24,16 +24,16 @@ namespace BusinessLayer
         [ForeignKey("Hall")]
         public int HallId { get; set; }
 
-        public Ticket Ticket { get; set; }
+        public Ticket? Ticket { get; set; }
 
         [ForeignKey("Ticket")]
-        public int TicketId { get; set; }
+        public int? TicketId { get; set; }
 
         public Seat() 
         {
         }
 
-        public Seat(int row, int column, SeatAvailability availability, Hall hall = null, Ticket ticket = null)
+        public Seat(int row, int column, SeatAvailability availability, Hall hall, Ticket ticket = null)
         {
             Hall = hall;
             Row = row;

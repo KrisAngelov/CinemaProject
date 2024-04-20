@@ -27,7 +27,7 @@ namespace SeedingLayer
 
                 DbContextOptionsBuilder builder = new DbContextOptionsBuilder();
                 builder.UseSqlServer(
-                    "Server=LAPTOP-AT94SBBO\\SQLEXPRESS;Database=Library11J;Trusted_Connection=True;"
+                    "Server=DESKTOP-IN16GJU;Database=CinemaDb;Trusted_Connection=True;"
                     //"Server=III-PC\\SQLEXPRESS;Database=MVCProjectTemplateDb;Trusted_Connection=True;"
                     );
 

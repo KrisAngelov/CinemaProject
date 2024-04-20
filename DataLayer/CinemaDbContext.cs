@@ -33,7 +33,6 @@ namespace DataLayer
             base.OnModelCreating(modelBuilder);
         }
 
-
         public DbSet<Movie> Movies { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
@@ -43,6 +42,7 @@ namespace DataLayer
         public DbSet<Showtime> Showtimes { get; set; }
 
         public DbSet<Ticket> Tickets { get; set; }
+
         public DbSet<Hall> Halls { get; set; }
 
     }

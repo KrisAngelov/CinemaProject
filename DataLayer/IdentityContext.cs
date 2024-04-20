@@ -198,7 +198,12 @@ namespace DataLayer
             }
         }
 
-        #endregion
+        public bool IsUserAdmin(User user)
+        {
+            return user != null ? user.Role == Role.Administrator : false;
+        }
+    
+    #endregion
 
     }
 }
