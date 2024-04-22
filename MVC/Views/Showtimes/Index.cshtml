@@ -1,4 +1,12 @@
-﻿@model IEnumerable<BusinessLayer.Showtime>
+﻿@using BusinessLayer;
+@using DataLayer;
+@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<User> signInManager
+@inject UserManager<User> userManager
+@inject IdentityContext identityContext
+
+@model IEnumerable<BusinessLayer.Showtime>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,9 +14,16 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+@if (signInManager.IsSignedIn(User))
+{
+    @if (identityContext.IsUserAdmin(await userManager.FindByNameAsync(User.Identity.Name)))
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    }
+}
 <table class="table">
     <thead>
         <tr>
@@ -43,9 +58,15 @@
                 @Html.DisplayFor(modelItem => item.Hall.Id)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @if (signInManager.IsSignedIn(User))
+                {
+                    @if (identityContext.IsUserAdmin(await userManager.FindByNameAsync(User.Identity.Name)))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                }             
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>                    
             </td>
         </tr>
 }

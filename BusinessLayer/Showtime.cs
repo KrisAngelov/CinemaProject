@@ -12,25 +12,18 @@ namespace BusinessLayer
     {
         [Key]
         public int Id { get; set; }
-
         [Required]
         public Movie Movie { get; set; } 
-
         [ForeignKey("Movie")]
         public int MovieId { get; set; }
-
         [Required]
         public DateTime StartTime { get; set; }
-
         [Required]
         public DateTime EndTime { get; set; }
-
         [Required]
         public Hall Hall { get; set; }
-
         [ForeignKey("Hall")]
         public int HallId { get; set; }
-
         public ICollection<Ticket> Tickets { get; set; }
 
         public Showtime()

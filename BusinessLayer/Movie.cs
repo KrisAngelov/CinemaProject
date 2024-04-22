@@ -6,25 +6,17 @@ namespace BusinessLayer
     public class Movie
     {
         [Key]
-        public int Id { get; set; }
-        
+        public int Id { get; set; }    
         [Required]
         public string Title { get; set; }
-
         public decimal Duration { get; set; }
-
         [Required]
         public string Description { get; set; }
-
         [Required]
         public string Director { get; set; }
-
         public string? PosterRoute { get; set; }
-
         public decimal? Rating { get; set; }
-
         public ICollection<Showtime> Showtimes { get; set; }
-
         public ICollection<Review> Reviews { get; set; }
 
         public Movie()

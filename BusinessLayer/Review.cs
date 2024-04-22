@@ -12,21 +12,15 @@ namespace BusinessLayer
     {
         [Key]
         public int Id { get; set; }
-
         [Required]
         public string Description { get; set; }
-
         public decimal Rating { get; set; }
-
         [Required]
         public User User { get; set; }
-
         [ForeignKey("User")]
         public string UserId { get; set; }
-
         [Required]
         public Movie Movie { get; set; }
-
         [ForeignKey("Movie")]
         public int MovieId { get; set; }
 

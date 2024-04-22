@@ -1,4 +1,12 @@
-﻿@model IEnumerable<BusinessLayer.Ticket>
+﻿@using BusinessLayer;
+@using DataLayer;
+@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<User> signInManager
+@inject UserManager<User> userManager
+@inject IdentityContext identityContext
+
+@model IEnumerable<BusinessLayer.Ticket>
 
 @{
     ViewData["Title"] = "Index";
@@ -37,9 +45,15 @@
                 @Html.DisplayFor(modelItem => item.Showtime.Id)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @if (signInManager.IsSignedIn(User))
+                {
+                    @if (identityContext.IsUserAdmin(await userManager.FindByNameAsync(User.Identity.Name)))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                }
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
             </td>
         </tr>
 }

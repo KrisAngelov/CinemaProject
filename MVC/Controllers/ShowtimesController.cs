@@ -49,12 +49,19 @@ namespace MVC.Controllers
             return View(showtime);
         }
 
+        public async Task<IActionResult> Reservation()
+        {
+            return View();
+        }
+
         // GET: Showtimes/Create
         public async Task<IActionResult> Create()
         {
             await LoadNavigationalEntities();
             return View();
         }
+
+
 
         // POST: Showtimes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -63,9 +70,10 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(IFormCollection formCollection)
         {
-            await LoadNavigationalEntities();
+            //await LoadNavigationalEntities();
 
             Movie movie = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
+
             Hall hall = await hallManager.ReadAsync(int.Parse(formCollection["HallId"]));
 
             DateTime startTime;
@@ -78,6 +86,7 @@ namespace MVC.Controllers
 
             Showtime showtime = new Showtime(movie, startTime,
                 endTime, hall);
+            //showtime.Id = int.Pa;
 
             if (hasStartDateTime)
             {
@@ -86,6 +95,19 @@ namespace MVC.Controllers
             if (hasEndDateTime)
             {
                 showtime.EndTime = endTime;
+            }
+            if (!string.IsNullOrEmpty(formCollection["MovieId"]))
+            {
+                Movie movie2 = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
+                showtime.Movie = movie2;
+                showtime.MovieId = int.Parse(formCollection["MovieId"]);
+            }
+
+            if (!string.IsNullOrEmpty(formCollection["HallId"]))
+            {
+                Hall hall2 = await hallManager.ReadAsync(int.Parse(formCollection["HallId"]));
+                showtime.Hall = hall2;
+                showtime.HallId = int.Parse(formCollection["HallId"]);
             }
 
             if (ModelState.IsValid)
@@ -122,12 +144,13 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, IFormCollection formCollection) 
         {
-            if (id != formCollection["Id"])
+            if (id != int.Parse(formCollection["Id"]))
             {
                 return NotFound();
             }
 
             Movie movie = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
+
             Hall hall = await hallManager.ReadAsync(int.Parse(formCollection["HallId"]));
 
             DateTime startTime;
@@ -140,6 +163,7 @@ namespace MVC.Controllers
 
             Showtime showtime = new Showtime(movie, startTime,
                 endTime, hall);
+            showtime.Id = id;
 
             if (hasStartDateTime)
             {
@@ -148,6 +172,19 @@ namespace MVC.Controllers
             if (hasEndDateTime)
             {
                 showtime.EndTime = endTime;
+            }
+            if (!string.IsNullOrEmpty(formCollection["MovieId"]))
+            {
+                Movie movie2 = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
+                showtime.Movie = movie2;
+                showtime.MovieId = int.Parse(formCollection["MovieId"]);
+            }
+
+            if (!string.IsNullOrEmpty(formCollection["HallId"]))
+            {
+                Hall hall2 = await hallManager.ReadAsync(int.Parse(formCollection["HallId"]));
+                showtime.Hall = hall2;
+                showtime.HallId = int.Parse(formCollection["HallId"]);
             }
 
             if (ModelState.IsValid)
@@ -182,7 +219,7 @@ namespace MVC.Controllers
             await LoadNavigationalEntities();
 
             return View(showtime);
-        }
+        }  
 
         // GET: Showtimes/Delete/5
         public async Task<IActionResult> Delete(int id)
@@ -216,8 +253,11 @@ namespace MVC.Controllers
         }
         private async Task LoadNavigationalEntities()
         {
-            ViewData["Movies"] = new SelectList(await movieManager.ReadAllAsync(), "Id", "Name");
-            ViewData["Halls"] = new SelectList(await hallManager.ReadAllAsync(), "Id", "Number");
+            ICollection<Movie> movies = await movieManager.ReadAllAsync();
+            ViewData["Movies"] = new SelectList(movies, "Id", "Title");
+            ICollection<Hall> halls = await hallManager.ReadAllAsync();
+            ViewData["Halls"] = new SelectList(halls, "Id", "Number");
         }
+
     }
 }

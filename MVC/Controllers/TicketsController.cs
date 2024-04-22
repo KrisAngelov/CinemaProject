@@ -9,6 +9,8 @@ using BusinessLayer;
 using DataLayer;
 using ServiceLayer;
 using Humanizer.Localisation;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MVC.Controllers
 {
@@ -16,19 +18,36 @@ namespace MVC.Controllers
     {
         private readonly TicketManager ticketManager;
         private readonly ShowtimeManager showtimeManager;
-        private readonly IdentityManager userManager;
+        private readonly IdentityManager identityManager;
+        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
+        private readonly IdentityContext identityContext;
 
-        public TicketsController(TicketManager ticketManager, ShowtimeManager showtimeManager, IdentityManager userManager)
+        public TicketsController(TicketManager ticketManager, ShowtimeManager showtimeManager, 
+            IdentityManager identityManager, SignInManager<User> signInManager, UserManager<User> userManager, 
+            IdentityContext identityContext)
         {
             this.ticketManager = ticketManager;
             this.showtimeManager = showtimeManager;
+            this.identityManager = identityManager;
+            this.signInManager = signInManager;
             this.userManager = userManager;
+            this.identityContext = identityContext;
         }
 
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            return View(await ticketManager.ReadAllAsync(true, true));
+            if(identityContext.IsUserAdmin(await userManager.FindByNameAsync(User.Identity.Name)))
+            {
+                return View(await ticketManager.ReadAllAsync(true, true));
+            }
+            else
+            {
+                string UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
+                return View((await ticketManager.ReadAllAsync(true, true)).Where(t => t.UserId == UserId));
+            }
+            
         }
 
         // GET: Tickets/Details/5
@@ -51,6 +70,7 @@ namespace MVC.Controllers
         // GET: Tickets/Create
         public async Task<IActionResult> Create()
         {
+
             await LoadNavigationalEntities();
             return View();
         }
@@ -64,12 +84,14 @@ namespace MVC.Controllers
         {
             await LoadNavigationalEntities();
 
-            Showtime showtime = await showtimeManager.ReadAsync(int.Parse(formCollection["ShowtimeId"]));
-            User user = await userManager.ReadUserAsync(formCollection["UserId"]);
+            Showtime showtime = await showtimeManager.ReadAsync(int.Parse(formCollection["ShowtimeId"]), false, false);
+            User user = await identityManager.ReadUserAsync(formCollection["UserId"]);
 
             decimal price = decimal.Parse(formCollection["Price"]);
 
             Ticket ticket = new Ticket(user, showtime, price);
+            ticket.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
+            
 
             if (ModelState.IsValid)
             {
@@ -109,9 +131,9 @@ namespace MVC.Controllers
             {
                 return NotFound();
             }
-
-            Showtime showtime = await showtimeManager.ReadAsync(int.Parse(formCollection["ShowtimeId"]));
-            User user = await userManager.ReadUserAsync(formCollection["UserId"]);
+            await LoadNavigationalEntities();
+            Showtime showtime = await showtimeManager.ReadAsync(int.Parse(formCollection["ShowtimeId"]), false, false);
+            User user = await identityManager.ReadUserAsync(formCollection["UserId"]);
 
             decimal price = decimal.Parse(formCollection["Price"]);
 
@@ -184,8 +206,12 @@ namespace MVC.Controllers
 
         private async Task LoadNavigationalEntities()
         {
-            ViewData["Showtimes"] = new SelectList(await showtimeManager.ReadAllAsync(), "Id", "Id");
-            ViewData["Users"] = new SelectList(await userManager.ReadAllUsersAsync(), "Id", "FirstName");
+            //ViewData["Showtimes"] = new SelectList(await showtimeManager.ReadAllAsync(), "Id", "Id");
+            //ViewData["Users"] = new SelectList(await identityManager.ReadAllUsersAsync(), "Id", "UserName");
+            ICollection<Showtime> showtimes = await showtimeManager.ReadAllAsync();
+            ViewData["Showtimes"] = new SelectList(showtimes, "Id", "StartTime");
+            //ICollection<User> users = await identityManager.ReadAllUsersAsync();
+            //ViewData["Users"] = new SelectList(users, "Id", "UserName");
         }
     }
 }

@@ -1,0 +1,73 @@
+﻿<script >
+var mask = [
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+[1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+[0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+[0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+[0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0]
+];
+
+window.addEventListener('load', function() {
+        var seats = document.querySelector('.seats');
+        for(var i = 0; i < mask.length; i++) {
+    var row = mask[i];
+    var seatNumber = 1;
+    var soldSeatIndex = Math.ceil(getRandom(0, row.length - 1));
+    for(var j = 0;
+    j < row.length;
+    j ++)
+
+{
+    var hasSeat = row[j] == 1;
+    var seat = soldSeatIndex == j ? createSoldSeat(seatNumber) : createSeat(seatNumber, getPrice(i));
+    seats .appendChild(hasSeat ? seat : createEmpty());
+    if(hasSeat) seatNumber++;
+}
+
+}
+}
+
+);
+function getRandom(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function getPrice(row) {
+    return row < 3 ? 2.5 : 2;
+}
+
+function createEmpty() {
+    var seat = document.createElement('DIV');
+    seat .className = 'emptySeat';
+    return seat;
+}
+
+function createSeat(seatNumber, price) {
+    return createSeatCore('seat', 'price $' + price, seatNumber);
+}
+
+function createSoldSeat(seatNumber) {
+    return createSeatCore('seat sold', 'Sold out', seatNumber);
+}
+
+function createSeatCore(className, text, seatNumber) {
+    var seat = document.createElement('DIV');
+    seat .className = className;
+    seat .setAttribute('title', text);
+    var span = document.createElement('SPAN');
+    span .innerHTML = seatNumber;
+    seat .appendChild(span);
+    return seat;
+}
+
+</script >
+
+<div class="cimema" >
+<div class="seats" >
+</div >
+<div class="screen" >
+<div class="text" > Cinema Screen</div >
+<div class="screen-line" > </div >
+</div >
+</div >

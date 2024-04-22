@@ -12,20 +12,13 @@ namespace BusinessLayer
     {
         [Key]
         public int Id { get; set; }
-
         public int Row { get; set; }
-
         public int Column { get; set; }
-
         public SeatAvailability Availability { get; set; }
-
         public Hall Hall { get; set; }
-
         [ForeignKey("Hall")]
         public int HallId { get; set; }
-
         public Ticket? Ticket { get; set; }
-
         [ForeignKey("Ticket")]
         public int? TicketId { get; set; }
 

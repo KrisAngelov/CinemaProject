@@ -46,7 +46,7 @@ namespace SeedingLayer
                 dbContext.Roles.Add(new IdentityRole("User") { NormalizedName = "USER" });
                 await dbContext.SaveChangesAsync();
 
-                IdentityResultSet<User> result = await identityContext.CreateUserAsync("admin", "admin", "admincho@abv.bg", "Admin", "Adminov", 20, Role.Administrator);
+                IdentityResultSet<User> result = await identityContext.CreateUserAsync("admin", "admin", "admin@abv.bg", "Admin", "Adminov", 20, Role.Administrator);
 
                 Console.WriteLine("Roles added successfully!");
 

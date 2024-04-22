@@ -63,13 +63,14 @@ namespace MVC.Controllers
         {
             await LoadNavigationalEntities();
 
+            Hall hall = await hallManager.ReadAsync(int.Parse(formCollection["HallId"]));
             Seat seat = new Seat(int.Parse(formCollection["Row"]), int.Parse(formCollection["Column"]),
-                (SeatAvailability)Enum.Parse(typeof(SeatAvailability), formCollection["Availability"]), null, null);
+                (SeatAvailability)Enum.Parse(typeof(SeatAvailability), formCollection["Availability"]), hall, null);
 
             if (!string.IsNullOrEmpty(formCollection["HallId"]))
             {
-                Hall hall = await hallManager.ReadAsync(int.Parse(formCollection["HallId"]));
-                seat.Hall = hall;
+                Hall hall1 = await hallManager.ReadAsync(int.Parse(formCollection["HallId"]));
+                seat.Hall = hall1;
                 seat.HallId = int.Parse(formCollection["HallId"]);
             }
 
@@ -206,9 +207,9 @@ namespace MVC.Controllers
         private async Task LoadNavigationalEntities()
         {
             ICollection<Hall> halls = await hallManager.ReadAllAsync();
-            ViewData["Hall"] = new SelectList(halls, "Id", "Id");
+            ViewData["Halls"] = new SelectList(halls, "Id", "Number");
             ICollection<Ticket> tickets = await ticketManager.ReadAllAsync();
-            ViewData["Ticket"] = new SelectList(tickets, "Id", "Id");
+            ViewData["Tickets"] = new SelectList(tickets, "Id", "Id");
             ViewData["Availability"] = new SelectList(Enum.GetValues(typeof(SeatAvailability)));
         }
     }

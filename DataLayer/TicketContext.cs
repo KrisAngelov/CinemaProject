@@ -22,7 +22,7 @@ namespace DataLayer
         {
             try
             {
-                Showtime showtimeFromDb = await dbContext.Showtimes.FindAsync(item.Showtime);
+                Showtime showtimeFromDb = await dbContext.Showtimes.FindAsync(item.Showtime.Id);
 
                 if (showtimeFromDb != null)
                 {

@@ -1,4 +1,13 @@
-﻿@model BusinessLayer.Movie
+﻿@using BusinessLayer;
+@using DataLayer;
+@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<User> signInManager
+@inject UserManager<User> userManager
+@inject IdentityContext identityContext
+
+
+@model BusinessLayer.Movie
 
 @{
     ViewData["Title"] = "Details";
@@ -49,6 +58,12 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    @if (signInManager.IsSignedIn(User))
+    {
+        @if (identityContext.IsUserAdmin(await userManager.FindByNameAsync(User.Identity.Name)))
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        }
+    }
     <a asp-action="Index">Back to List</a>
 </div>

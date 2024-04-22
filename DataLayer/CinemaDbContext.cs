@@ -10,12 +10,10 @@ namespace DataLayer
         {
 
         }
-
         public CinemaDbContext(DbContextOptions options) : base(options)
         {
 
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -24,7 +22,6 @@ namespace DataLayer
             }
             base.OnConfiguring(optionsBuilder);
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().Property(c => c.UserName).IsRequired();
@@ -32,18 +29,11 @@ namespace DataLayer
 
             base.OnModelCreating(modelBuilder);
         }
-
         public DbSet<Movie> Movies { get; set; }
-
         public DbSet<Review> Reviews { get; set; }
-
         public DbSet<Seat> Seats { get; set; }
-
         public DbSet<Showtime> Showtimes { get; set; }
-
         public DbSet<Ticket> Tickets { get; set; }
-
         public DbSet<Hall> Halls { get; set; }
-
     }
 }
