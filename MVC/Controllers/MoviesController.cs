@@ -14,18 +14,15 @@ namespace MVC.Controllers
     public class MoviesController : Controller
     {
         private readonly MovieManager movieManager;
-
         public MoviesController(MovieManager movieManager)
         {
             this.movieManager = movieManager;
         }
-
         // GET: Movies
         public async Task<IActionResult> Index()
         {
             return View(await movieManager.ReadAllAsync(true, true));
         }
-
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -33,13 +30,11 @@ namespace MVC.Controllers
             {
                 return NotFound();
             }
-
             var movie = await movieManager.ReadAsync(id, true);
             if (movie == null)
             {
                 return NotFound();
             }
-
             return View(movie);
         }
 

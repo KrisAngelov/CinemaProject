@@ -27,7 +27,8 @@ namespace MVC.Controllers
         // GET: Seats
         public async Task<IActionResult> Index()
         {
-            return View(await seatManager.ReadAllAsync());
+            await LoadNavigationalEntities();
+            return View(await seatManager.ReadAllAsync(true));
         }
 
         // GET: Seats/Details/5

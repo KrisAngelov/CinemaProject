@@ -11,6 +11,7 @@ using ServiceLayer;
 using Humanizer.Localisation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Stripe.Checkout;
 
 namespace MVC.Controllers
 {
@@ -91,7 +92,9 @@ namespace MVC.Controllers
 
             Ticket ticket = new Ticket(user, showtime, price);
             ticket.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
-            
+
+            var additionalInfo1 = formCollection["additionalInfo1"];
+            var additionalInfo2 = formCollection["additionalInfo2"];
 
             if (ModelState.IsValid)
             {
@@ -212,6 +215,65 @@ namespace MVC.Controllers
             ViewData["Showtimes"] = new SelectList(showtimes, "Id", "StartTime");
             //ICollection<User> users = await identityManager.ReadAllUsersAsync();
             //ViewData["Users"] = new SelectList(users, "Id", "UserName");
+        }
+
+        public IActionResult CheckOut(int id)
+        {
+            var ticket = ticketManager.ReadAsync(id);
+
+            var options = new SessionCreateOptions
+            {
+                SuccessUrl = $"https://localhost:7297/Tickets/OrderConfirmation",
+                CancelUrl = $"https://localhost:7297/Tickets/Fail",
+                LineItems = new List<SessionLineItemOptions>
+                {
+                    new Stripe.Checkout.SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)(ticket.Result.Price)*100,
+                            Currency = "bgn",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = ticket.Result.ShowtimeId.ToString(),
+                            }
+                        },                  
+                        Quantity = 1,
+                    },
+                },
+                Mode = "payment"
+            };
+
+            var service = new SessionService();
+            var session = service.Create(options);
+
+            TempData["Session"] = session.Id;
+
+            Response.Headers.Add("Location", session.Url);
+            return new StatusCodeResult(303);
+        }
+
+        public IActionResult OrderConfirmation()
+        {
+            var service = new SessionService();
+            var session = service.Get(TempData["Session"].ToString());
+            if (session.PaymentStatus == "paid")
+            {
+                var transaction = session.PaymentIntentId.ToString();
+
+                return View("Success");
+            }
+            return View("Fail");
+        }
+
+        public IActionResult Success()
+        {
+            return View();
+        }
+
+        public IActionResult Fail()
+        {
+            return View();
         }
     }
 }

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BusinessLayer;
 using DataLayer;
 using ServiceLayer;
+using Microsoft.AspNetCore.Identity;
+using System.Net.Sockets;
 
 namespace MVC.Controllers
 {
@@ -16,18 +18,22 @@ namespace MVC.Controllers
         private readonly ReviewManager reviewManager;
         private readonly IdentityManager identityManager;
         private readonly MovieManager movieManager;
+        private readonly UserManager<User> userManager;
 
-        public ReviewsController(ReviewManager reviewManager, IdentityManager identityManager, MovieManager movieManager)
+        public ReviewsController(ReviewManager reviewManager, IdentityManager identityManager, 
+            MovieManager movieManager, UserManager<User> userManager)
         {
             this.reviewManager = reviewManager;
             this.identityManager = identityManager;
             this.movieManager = movieManager;
+            this.userManager = userManager;
         }
 
         // GET: Reviews
         public async Task<IActionResult> Index()
         {
-            return View(await reviewManager.ReadAllAsync());
+            await LoadNavigationalEntities();
+            return View(await reviewManager.ReadAllAsync(true));
         }
 
         // GET: Reviews/Details/5
@@ -65,19 +71,22 @@ namespace MVC.Controllers
 
             decimal rating = decimal.Parse(formCollection["Rating"]);
 
-            Review review = new Review(formCollection["Comment"], rating, null, null);
+            Movie movie = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
+            User user = await identityManager.ReadUserAsync(formCollection["UserId"]);
+            Review review = new Review(formCollection["Description"], rating, user, movie);
+            review.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
 
-            if (!string.IsNullOrEmpty(formCollection["UserId"]))
+            /*if (!string.IsNullOrEmpty(formCollection["UserId"]))
             {
                 User user = await identityManager.ReadUserAsync(formCollection["UserId"]);
                 review.User = user;
                 review.UserId = formCollection["UserId"];
-            }
+            }*/
 
             if (!string.IsNullOrEmpty(formCollection["MovieId"]))
             {
-                Movie movie = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
-                review.Movie = movie;
+                Movie movie2 = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
+                review.Movie = movie2;
                 review.MovieId = int.Parse(formCollection["MovieId"]);
             }
 
@@ -121,10 +130,11 @@ namespace MVC.Controllers
 
             decimal rating = decimal.Parse(formCollection["Rating"]);
 
-            Review review = new Review(formCollection["Comment"], rating, null, null);
-            review.Id = id;
+            Movie movie = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
+            User user = await identityManager.ReadUserAsync(formCollection["UserId"]);
+            Review review = new Review(formCollection["Description"], rating, user, movie);
 
-            if (!string.IsNullOrEmpty(formCollection["UserId"]))
+            /*if (!string.IsNullOrEmpty(formCollection["UserId"]))
             {
                 User user = await identityManager.ReadUserAsync(formCollection["UserId"]);
                 review.User = user;
@@ -136,7 +146,7 @@ namespace MVC.Controllers
                 Movie movie = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
                 review.Movie = movie;
                 review.MovieId = int.Parse(formCollection["MovieId"]);
-            }
+            }*/
 
             if (ModelState.IsValid)
             {
@@ -206,9 +216,9 @@ namespace MVC.Controllers
         private async Task LoadNavigationalEntities()
         {
             IEnumerable<User> users = await identityManager.ReadAllUsersAsync();
-            ViewData["User"] = new SelectList(users, "Id", "Id");
+            ViewData["Users"] = new SelectList(users, "Id", "UserName");
             ICollection<Movie> movies = await movieManager.ReadAllAsync();
-            ViewData["Movie"] = new SelectList(movies, "Id", "Id");
+            ViewData["Movies"] = new SelectList(movies, "Id", "Title");
         }
     }
 }

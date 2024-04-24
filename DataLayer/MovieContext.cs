@@ -12,12 +12,10 @@ namespace DataLayer
     public class MovieContext : IDb<Movie, int>
     {
         private readonly CinemaDbContext dbContext;
-
         public MovieContext(CinemaDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
-
         public async Task CreateAsync(Movie item)
         {
             try
@@ -30,7 +28,6 @@ namespace DataLayer
                 throw;
             }
         }
-
         public async Task<Movie> ReadAsync(int key, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try
@@ -41,12 +38,10 @@ namespace DataLayer
                 {
                     query = query.Include(a => a.Reviews).Include(a => a.Showtimes);
                 }
-
                 if (isReadOnly)
                 {
                     query = query.AsNoTrackingWithIdentityResolution();
                 }
-
                 return await query.FirstOrDefaultAsync(a => a.Id == key);
             }
             catch (Exception)
@@ -54,7 +49,6 @@ namespace DataLayer
                 throw;
             }
         }
-
         public async Task<ICollection<Movie>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
         {
             try

@@ -18,7 +18,8 @@ namespace DataLayer
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-IN16GJU;Database=CinemaDb;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-IN16GJU;Database=CinemaDb;" +
+                    "Trusted_Connection=True;");
             }
             base.OnConfiguring(optionsBuilder);
         }

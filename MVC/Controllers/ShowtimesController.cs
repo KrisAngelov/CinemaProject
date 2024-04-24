@@ -49,10 +49,6 @@ namespace MVC.Controllers
             return View(showtime);
         }
 
-        public async Task<IActionResult> Reservation()
-        {
-            return View();
-        }
 
         // GET: Showtimes/Create
         public async Task<IActionResult> Create()

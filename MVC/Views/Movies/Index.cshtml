@@ -1,6 +1,7 @@
 ﻿@using BusinessLayer;
 @using DataLayer;
 @using Microsoft.AspNetCore.Identity;
+@using System.IO
 
 @inject SignInManager<User> signInManager
 @inject UserManager<User> userManager
@@ -27,6 +28,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.PosterRoute)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
@@ -41,15 +45,16 @@
             <th>
                 @Html.DisplayNameFor(model => model.Rating)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PosterRoute)
-            </th>
+            
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                <img src="~/img/@item.PosterRoute">
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -65,9 +70,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Rating)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PosterRoute)
-            </td>
+            
             <td>            
                 @if (signInManager.IsSignedIn(User))
                 {
