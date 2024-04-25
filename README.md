@@ -24,3 +24,6 @@ builder.UseSqlServer("your_connection_string");
 ```
 - Да се стартира SeedingLayer преди тестване на проекта;
 - Да се стартира през опцията "MVC", а не през "IIS Express" или "WSL".
+
+## Контакти
+kristiyanangelov_zh19@schoolmath.eu
