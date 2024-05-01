@@ -6,26 +6,15 @@ const container = document.querySelector(".container");
 const seats = document.querySelectorAll(".row-seat .seat:not(.sold)");
 const count = document.getElementById("count");
 const total = document.getElementById("total");
-/*const movieSelect = document.getElementById("movie");*/
 
 populateUI();
 
-/*let ticketPrice = +movieSelect.value;*/
 let ticketPrice = +12;
 
-// Save selected movie index and price
-function setMovieData(/*movieIndex,*/ moviePrice) {
-    /*localStorage.setItem("selectedMovieIndex", movieIndex);*/
-    localStorage.setItem("selectedMoviePrice", moviePrice);
-}
-
-// Update total and count
 function updateSelectedCount() {
     const selectedSeats = document.querySelectorAll(".row-seat .seat.selected");
 
     const seatsIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
-
-    /*var additionalInfo1 = seatsIndex.;*/
 
     document.getElementById("additionalInfo1").value = additionalInfo1;
     document.getElementById("additionalInfo2").value = additionalInfo2;
@@ -40,13 +29,9 @@ function updateSelectedCount() {
     var priceField = document.getElementById("priceId");
     var value = (selectedSeatsCount * ticketPrice).toString();
     priceField.value = value;
-    /*$("#priceId").value(total.innerText);*/
-
-    setMovieData(/*movieSelect.selectedIndex, */movieSelect.value);
 }
 
 
-// Get data from localstorage and populate UI
 function populateUI() {
     const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
 
@@ -57,23 +42,8 @@ function populateUI() {
             }
         });
     }
-
-    //const selectedMovieIndex = localStorage.getItem("selectedMovieIndex");
-
-    //if (selectedMovieIndex !== null) {
-    //    movieSelect.selectedIndex = selectedMovieIndex;
-    //    console.log(selectedMovieIndex)
-    //}
 }
 console.log(populateUI())
-// Movie select event
-//movieSelect.addEventListener("change", (e) => {
-//    ticketPrice = +e.target.value;
-//    setMovieData(e.target.selectedIndex, e.target.value);
-//    updateSelectedCount();
-//});
-
-// Seat click event
 container.addEventListener("click", (e) => {
     if (
         e.target.classList.contains("seat") &&
@@ -85,7 +55,4 @@ container.addEventListener("click", (e) => {
     }
 });
 
-// Initial count and total set
 updateSelectedCount();
-
-

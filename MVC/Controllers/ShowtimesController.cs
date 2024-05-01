@@ -66,23 +66,18 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(IFormCollection formCollection)
         {
-            //await LoadNavigationalEntities();
-
             Movie movie = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
 
             Hall hall = await hallManager.ReadAsync(int.Parse(formCollection["HallId"]));
 
             DateTime startTime;
-            // Remember to change the <input type="date"> otherwise the string won't be bound to the DateTime!
             bool hasStartDateTime = DateTime.TryParse(formCollection["StartTime"], out startTime);
 
             DateTime endTime;
-            // Remember to change the <input type="date"> otherwise the string won't be bound to the DateTime!
             bool hasEndDateTime = DateTime.TryParse(formCollection["EndTime"], out endTime);
 
             Showtime showtime = new Showtime(movie, startTime,
                 endTime, hall);
-            //showtime.Id = int.Pa;
 
             if (hasStartDateTime)
             {

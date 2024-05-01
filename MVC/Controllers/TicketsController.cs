@@ -147,8 +147,6 @@ namespace MVC.Controllers
                 try
                 {
                     bool useNavigationalProperties = false;
-
-                    // If the checkbox is not clicked, the browser does not send even our 'false' value!
                     string checkboxValue = formCollection["useNavigationalProperties"];
                     if (!string.IsNullOrEmpty(checkboxValue))
                     {
@@ -209,12 +207,8 @@ namespace MVC.Controllers
 
         private async Task LoadNavigationalEntities()
         {
-            //ViewData["Showtimes"] = new SelectList(await showtimeManager.ReadAllAsync(), "Id", "Id");
-            //ViewData["Users"] = new SelectList(await identityManager.ReadAllUsersAsync(), "Id", "UserName");
             ICollection<Showtime> showtimes = await showtimeManager.ReadAllAsync();
             ViewData["Showtimes"] = new SelectList(showtimes, "Id", "StartTime");
-            //ICollection<User> users = await identityManager.ReadAllUsersAsync();
-            //ViewData["Users"] = new SelectList(users, "Id", "UserName");
         }
 
         public IActionResult CheckOut(int id)

@@ -26,11 +26,6 @@ img {
     text-align:center;
 }
 
-/*a {
-    background-color: #;
-    color: white;
-}*/
-
 button {
     background-color: lightsalmon;
 }
@@ -44,8 +39,6 @@ nav {
 body {
   margin-bottom: 60px;
 }
-
-/*COPIED*/
 
 .movie-container {
     margin: 20px 0;
@@ -127,16 +120,15 @@ body {
 
 .containers {
     display: flex;
-    justify-content: center; /* Center the flex items horizontally */
+    justify-content: center;
 }
 
 .row {
-    display: flex; /* Make the row a flex container */
+    display: flex;
 }
 
 .screen-seat {
-    width: 200px; /* Adjust this value as needed */
-    /* Center the element */
+    width: 200px;
     margin: 0 auto;
 }
 

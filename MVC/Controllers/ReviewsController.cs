@@ -76,13 +76,6 @@ namespace MVC.Controllers
             Review review = new Review(formCollection["Description"], rating, user, movie);
             review.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
 
-            /*if (!string.IsNullOrEmpty(formCollection["UserId"]))
-            {
-                User user = await identityManager.ReadUserAsync(formCollection["UserId"]);
-                review.User = user;
-                review.UserId = formCollection["UserId"];
-            }*/
-
             if (!string.IsNullOrEmpty(formCollection["MovieId"]))
             {
                 Movie movie2 = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
@@ -133,28 +126,28 @@ namespace MVC.Controllers
             Movie movie = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
             User user = await identityManager.ReadUserAsync(formCollection["UserId"]);
             Review review = new Review(formCollection["Description"], rating, user, movie);
+            review.Id = id;
 
-            /*if (!string.IsNullOrEmpty(formCollection["UserId"]))
+
+            if (!string.IsNullOrEmpty(formCollection["UserId"]))
             {
-                User user = await identityManager.ReadUserAsync(formCollection["UserId"]);
-                review.User = user;
+                User user1 = await identityManager.ReadUserAsync(formCollection["UserId"]);
+                review.User = user1;
                 review.UserId = formCollection["UserId"];
             }
 
             if (!string.IsNullOrEmpty(formCollection["MovieId"]))
             {
-                Movie movie = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
-                review.Movie = movie;
+                Movie movie1 = await movieManager.ReadAsync(int.Parse(formCollection["MovieId"]));
+                review.Movie = movie1;
                 review.MovieId = int.Parse(formCollection["MovieId"]);
-            }*/
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
                     bool useNavigationalProperties = false;
-
-                    // If the checkbox is not clicked, the browser does not send even our 'false' value!
                     string checkboxValue = formCollection["useNavigationalProperties"];
                     if (!string.IsNullOrEmpty(checkboxValue))
                     {

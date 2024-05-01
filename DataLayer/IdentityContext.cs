@@ -24,8 +24,6 @@ namespace DataLayer
 
         public async Task SeedDataAsync(string adminPass, string adminEmail)
         {
-            //await context.Database.MigrateAsync();
-
             int userRoles = await context.UserRoles.CountAsync();
 
             if (userRoles == 0)
@@ -189,7 +187,6 @@ namespace DataLayer
         {
             try
             {
-                // Identity return Null if there is no user!
                 return await userManager.FindByNameAsync(name);
             }
             catch (Exception ex)

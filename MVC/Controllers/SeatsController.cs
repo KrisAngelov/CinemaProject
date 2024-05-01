@@ -146,8 +146,6 @@ namespace MVC.Controllers
                 try
                 {
                     bool useNavigationalProperties = false;
-
-                    // If the checkbox is not clicked, the browser does not send even our 'false' value!
                     string checkboxValue = formCollection["useNavigationalProperties"];
                     if (!string.IsNullOrEmpty(checkboxValue))
                     {
