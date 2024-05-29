@@ -14,9 +14,11 @@ namespace BusinessLayer
         public int Id { get; set; }
         public decimal Price { get; set; }
         [Required]
+        public bool Paid { get; set; }
+        [Required]
         public User User { get; set; }
         [ForeignKey("User")]
-        public string UserId { get; set; }
+        public string UserId { get; set; }       
         [Required]
         public Showtime Showtime { get; set; }
         [ForeignKey("Showtime")]
@@ -28,10 +30,11 @@ namespace BusinessLayer
             Seats = new List<Seat>();
         }
 
-        public Ticket(User user, Showtime showtime, decimal price = 0)
+        public Ticket(User user, Showtime showtime, bool paid, decimal price = 0)
         {
             User = user;
             Showtime = showtime;
+            Paid = false;
             Price = price;
             Seats = new List<Seat>();
         }

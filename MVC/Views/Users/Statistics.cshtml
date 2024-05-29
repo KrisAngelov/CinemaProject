@@ -1,0 +1,28 @@
+﻿@model BusinessLayer.User
+
+@{
+    ViewData["Title"] = "Statistics";
+    var userCount = ViewBag.UserCount;
+    var ticketCount = ViewBag.TicketCount;
+    var takenSeats = ViewBag.TakenSeats;
+    var movieCount = ViewBag.MovieCount;
+    var showtimeCount = ViewBag.ShowtimeCount;
+
+}
+
+<h1>Statistics</h1>
+
+<p>Total number of Users : @userCount</p>
+
+<p>Total number of Tickets : @ticketCount</p>
+
+<p>Total number of Taken Seats : @takenSeats</p>
+
+<p>Total number of Movies : @movieCount</p>
+
+<p>Total number of Showtimes : @showtimeCount</p>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -27,6 +27,10 @@ namespace DataLayer
         {
             modelBuilder.Entity<User>().Property(c => c.UserName).IsRequired();
             modelBuilder.Entity<User>().Property(c => c.Email).IsRequired();
+            modelBuilder.Entity<Ticket>().HasMany(p => p.Seats).WithOne(b => b.Ticket)
+                .HasForeignKey(p => p.TicketId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Seat>().HasOne(p => p.Ticket).WithMany(b => b.Seats)
+                .HasForeignKey(p => p.TicketId).OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(modelBuilder);
         }

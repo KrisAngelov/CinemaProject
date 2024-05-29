@@ -9,10 +9,19 @@ namespace MVC.Controllers
     public class UsersController : Controller
     {
         private readonly IdentityManager userManager;
+        private readonly TicketManager ticketManager;
+        private readonly SeatManager seatManager;
+        private readonly MovieManager movieManager;
+        private readonly ShowtimeManager showtimeManager;
 
-        public UsersController(IdentityManager manager)
+        public UsersController(IdentityManager manager, TicketManager ticketManager, SeatManager seatManager,
+            MovieManager movieManager, ShowtimeManager showtimeManager)
         {
             userManager = manager;
+            this.ticketManager = ticketManager; 
+            this.seatManager = seatManager;
+            this.movieManager = movieManager;
+            this.showtimeManager = showtimeManager;
         }
 
         public async Task<IActionResult> Index()
@@ -112,6 +121,16 @@ namespace MVC.Controllers
         private void LoadNavigationalEntities()
         {
             ViewData["Role"] = new SelectList(Enum.GetValues(typeof(Role)));
+        }
+
+        public async Task<IActionResult> Statistics()
+        {
+            ViewData["UserCount"] = (await userManager.ReadAllUsersAsync()).Count();
+            ViewData["TicketCount"] = (await ticketManager.ReadAllAsync()).Count();
+            ViewData["TakenSeats"] = (await seatManager.ReadAllAsync()).Where(s => s.Availability == SeatAvailability.Taken).Count();
+            ViewData["MovieCount"] = (await movieManager.ReadAllAsync()).Count();
+            ViewData["ShowtimeCount"] = (await showtimeManager.ReadAllAsync()).Count();
+            return View();
         }
     }
 }

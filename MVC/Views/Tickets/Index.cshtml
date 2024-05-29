@@ -1,4 +1,4 @@
-﻿@using BusinessLayer;
+﻿﻿@using BusinessLayer;
 @using DataLayer;
 @using Microsoft.AspNetCore.Identity;
 
@@ -33,30 +33,32 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Showtime.Id)
-            </td>
-            <td>
-                @if (signInManager.IsSignedIn(User))
-                {
-                    @if (identityContext.IsUserAdmin(await userManager.FindByNameAsync(User.Identity.Name)))
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Showtime.Id)
+                </td>
+                <td>
+                    @if (signInManager.IsSignedIn(User))
                     {
-                        
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        @if (identityContext.IsUserAdmin(await userManager.FindByNameAsync(User.Identity.Name)))
+                        {
+
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
                     }
-                }
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Checkout" asp-route-id="@item.Id">Checkout</a>
-            </td>
-        </tr>
-}
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Checkout" asp-route-id="@item.Id">Checkout</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+

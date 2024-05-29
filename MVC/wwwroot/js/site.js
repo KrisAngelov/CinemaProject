@@ -56,3 +56,16 @@ container.addEventListener("click", (e) => {
 });
 
 updateSelectedCount();
+
+function MyFunction() {
+    var data = document.getElementsByClassName("selected");
+    var ids = "";
+    for (var i = 0; i < data.length; i++) {
+        ids += data[i].getAttribute("id");
+
+    }
+    
+    $.post("/TicketsController/Create", { idval: ids });
+
+}
+}

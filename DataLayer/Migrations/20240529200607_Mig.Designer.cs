@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    [Migration("20240419085330_Mig")]
+    [Migration("20240529200607_Mig")]
     partial class Mig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,6 +176,9 @@ namespace DataLayer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -443,7 +446,8 @@ namespace DataLayer.Migrations
 
                     b.HasOne("BusinessLayer.Ticket", "Ticket")
                         .WithMany("Seats")
-                        .HasForeignKey("TicketId");
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Hall");
 

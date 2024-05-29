@@ -36,6 +36,23 @@ namespace DataLayer
                     item.User = userFromDb;
                 }
 
+                List<Seat> seats = new();
+                foreach (Seat seat in item.Seats)
+                {
+                    Seat seatFromDb = await dbContext.Seats.FindAsync(seat.Id);
+
+                    if (seatFromDb != null)
+                    {
+                        seats.Add(seatFromDb);
+                    }
+
+                    else
+                    {
+                        seats.Add(seat);
+                    }
+                }
+                item.Seats = seats;
+
                 dbContext.Tickets.Add(item);
                 await dbContext.SaveChangesAsync();
             }
@@ -157,13 +174,17 @@ namespace DataLayer
         {
             try
             {
-                Ticket ticketFromDb = await ReadAsync(key, false, false);
+                Ticket ticketFromDb = await ReadAsync(key, true, false);
+                
 
                 if (ticketFromDb is null)
                 {
                     throw new ArgumentException("Ticket with that Id does not exist!");
                 }
-
+                foreach (var item in ticketFromDb.Seats)
+                {
+                    dbContext.Seats.Remove(item);
+                }
                 dbContext.Tickets.Remove(ticketFromDb);
                 await dbContext.SaveChangesAsync();
             }

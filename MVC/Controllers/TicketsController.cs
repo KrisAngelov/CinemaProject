@@ -19,17 +19,19 @@ namespace MVC.Controllers
     {
         private readonly TicketManager ticketManager;
         private readonly ShowtimeManager showtimeManager;
+        private readonly SeatManager seatManager;
         private readonly IdentityManager identityManager;
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
         private readonly IdentityContext identityContext;
 
-        public TicketsController(TicketManager ticketManager, ShowtimeManager showtimeManager, 
+        public TicketsController(TicketManager ticketManager, ShowtimeManager showtimeManager, SeatManager seatManager,
             IdentityManager identityManager, SignInManager<User> signInManager, UserManager<User> userManager, 
             IdentityContext identityContext)
         {
             this.ticketManager = ticketManager;
             this.showtimeManager = showtimeManager;
+            this.seatManager = seatManager;
             this.identityManager = identityManager;
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -87,14 +89,43 @@ namespace MVC.Controllers
 
             Showtime showtime = await showtimeManager.ReadAsync(int.Parse(formCollection["ShowtimeId"]), false, false);
             User user = await identityManager.ReadUserAsync(formCollection["UserId"]);
+          
 
-            decimal price = decimal.Parse(formCollection["Price"]);
+            List<string> ids = new();
+            foreach (var item in formCollection["ids"])
+            {
+                ids.Add(item);
+            }
+            List<int> rows = new();
+            List<int> columns = new();
+            rows = ids.Select(i => (int)Math.Ceiling(double.Parse(i) / 8)).ToList();
+            columns = ids.Select(i => int.Parse(i) % 8).ToList();
 
-            Ticket ticket = new Ticket(user, showtime, price);
+            decimal price = ids.Count * 12;
+
+            Ticket ticket = new Ticket(user, showtime, false, price);
             ticket.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
 
             var additionalInfo1 = formCollection["additionalInfo1"];
             var additionalInfo2 = formCollection["additionalInfo2"];
+           
+
+            List<Seat> seats = new List<Seat>();
+            Seat seat= new Seat();
+            for (int i = 0; i < ids.Count; i++)
+            {
+                seat.Row = rows[i];
+                if (columns[i] == 0)
+                {
+                    seat.Column = 8;
+                }
+                else seat.Column = columns[i];
+                seat.Availability = SeatAvailability.Taken;
+                seat.Hall = ticket.Showtime.Hall;
+                seat.HallId = ticket.Showtime.HallId;
+                seats.Add(seat);
+            }
+            ticket.Seats = seats;
 
             if (ModelState.IsValid)
             {
@@ -140,7 +171,7 @@ namespace MVC.Controllers
 
             decimal price = decimal.Parse(formCollection["Price"]);
 
-            Ticket ticket = new Ticket(user, showtime, price);
+            Ticket ticket = new Ticket(user, showtime, false, price);
 
             if (ModelState.IsValid)
             {
@@ -209,6 +240,9 @@ namespace MVC.Controllers
         {
             ICollection<Showtime> showtimes = await showtimeManager.ReadAllAsync();
             ViewData["Showtimes"] = new SelectList(showtimes, "Id", "StartTime");
+            ICollection<Seat> seats = await seatManager.ReadAllAsync();
+            List<int> nums = seats.Select(s => 8 * s.Row + s.Column).ToList();
+            ViewData["Seats"] = nums;
         }
 
         public IActionResult CheckOut(int id)
@@ -251,6 +285,7 @@ namespace MVC.Controllers
         {
             var service = new SessionService();
             var session = service.Get(TempData["Session"].ToString());
+            
             if (session.PaymentStatus == "paid")
             {
                 var transaction = session.PaymentIntentId.ToString();
@@ -262,6 +297,7 @@ namespace MVC.Controllers
 
         public IActionResult Success()
         {
+
             return View();
         }
 
@@ -269,5 +305,7 @@ namespace MVC.Controllers
         {
             return View();
         }
+
+        
     }
 }

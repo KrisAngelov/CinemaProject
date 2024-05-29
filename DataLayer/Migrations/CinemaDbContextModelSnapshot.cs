@@ -175,6 +175,9 @@ namespace DataLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -441,7 +444,8 @@ namespace DataLayer.Migrations
 
                     b.HasOne("BusinessLayer.Ticket", "Ticket")
                         .WithMany("Seats")
-                        .HasForeignKey("TicketId");
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Hall");
 

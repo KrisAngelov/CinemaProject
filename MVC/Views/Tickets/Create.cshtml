@@ -2,32 +2,33 @@
 
 @{
     ViewData["Title"] = "Create";
+    List<int> nums = ViewBag.Seats;
 }
 
 <h1>Reserve</h1>
 
 <h4>Ticket</h4>
 <hr />
+<form asp-action="Create">
+
+
 <div class="row">
     <div class="col-md-4">
         <section>
-            <form asp-action="Create">
+            
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Price" class="control-label"></label>
-                    <input asp-for="Price" id="priceId" class="form-control" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
                 <div class="form-group">
                     <label asp-for="ShowtimeId" class="control-label"></label>
                     <select asp-for="ShowtimeId" class="form-control" asp-items="ViewBag.Showtimes"></select>
                 </div>
                 <input type="hidden" name="additionalInfo1" id="additionalInfo1" />
                 <input type="hidden" name="additionalInfo2" id="additionalInfo2" />
+           
+
                 <div class="form-group">
-                    <input type="submit" value="Create" onclick="changeClass()" class="btn btn-primary" id="buttonForCreate" />
+                    <input type="submit" value="Create" onclick="MyFunction()" class="btn btn-primary" id="buttonForCreate" />
                 </div>
-            </form>
+            
         </section>
     </div>
     <div class="col-md-6 col-md-offset-2" style="background-color: #d8f7ff">
@@ -50,16 +51,39 @@
                 <div class="container">
                     <div class="screen"></div>
 
-                    <div class="containers" style="display: flex; justify-content: center;">
-                        <div class="row-seat" style="display: flex;">
-                            <div class="seat" id="seat1"></div>
-                            <div class="seat" id="seat2"></div>
-                            <div class="seat" id="seat3"></div>
-                            <div class="seat" id="seat4"></div>
-                            <div class="seat" id="seat5"></div>
-                            <div class="seat" id="seat6"></div>
-                            <div class="seat" id="seat7"></div>
-                            <div class="seat" id="seat8"></div>
+                    @for (int i = 0; i < 7; i++)
+                    {
+                        <div class="containers" style="display: flex; justify-content: center;">
+                        <div class="row-seat" style="display: flex;" >
+                            @for (int j = 1; j <= 8; j++)
+                            {
+                                @if(nums.Contains(8*(i+1)+j))
+                                {
+                                    <div class="seat sold"></div>
+                                }
+                                else
+                                {
+                                    <input class="seat" type="checkbox" name="ids" value="@(8*i+j)" />
+                                }
+                                
+                            }
+                            
+                            
+                        </div>
+                        </div>
+                    }
+
+                    @*<div class="containers" style="display: flex; justify-content: center;">
+                        <div class="row-seat" style="display: flex;" >
+                            
+                            <div class="seat"><input type="checkbox" name="seat1" value="1" />1</div>
+                            <div class="seat"><input type="checkbox" name="seat2" value="2" />2</div>
+                            <div class="seat"><input type="checkbox" name="seat3" value="3" />3</div>
+                            <div class="seat"><input type="checkbox" name="seat4" value="4" /></div>
+                            <div class="seat"><input type="checkbox" name="seat5" value="5" /></div>
+                            <div class="seat"><input type="checkbox" name="seat6" value="6" /></div>
+                            <div class="seat"><input type="checkbox" name="seat7" value="7" /></div>
+                            <div class="seat"><input type="checkbox" name="seat8" value="8" /></div>
                         </div>
                     </div>
                     <div class="containers" style="display: flex; justify-content: center;">
@@ -134,7 +158,7 @@
                             <div class="seat"></div>
                             <div class="seat"></div>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
 
                 <p class="text">
@@ -146,7 +170,7 @@
     </div>
     <script src="~/js/site.js"></script>
 </div>
-
+</form>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
