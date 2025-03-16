@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Create";
     List<int> nums = ViewBag.Seats;
+    
 }
 
 <h1>Reserve</h1>
@@ -26,7 +27,7 @@
            
 
                 <div class="form-group">
-                    <input type="submit" value="Create" onclick="MyFunction()" class="btn btn-primary" id="buttonForCreate" />
+                    <input type="submit" value="Create" onclick="MyFunction()" class="btn btn-primary" id="buttonForCreate" style="background-color:#cd4b32" />
                 </div>
             
         </section>
@@ -72,99 +73,8 @@
                         </div>
                         </div>
                     }
-
-                    @*<div class="containers" style="display: flex; justify-content: center;">
-                        <div class="row-seat" style="display: flex;" >
-                            
-                            <div class="seat"><input type="checkbox" name="seat1" value="1" />1</div>
-                            <div class="seat"><input type="checkbox" name="seat2" value="2" />2</div>
-                            <div class="seat"><input type="checkbox" name="seat3" value="3" />3</div>
-                            <div class="seat"><input type="checkbox" name="seat4" value="4" /></div>
-                            <div class="seat"><input type="checkbox" name="seat5" value="5" /></div>
-                            <div class="seat"><input type="checkbox" name="seat6" value="6" /></div>
-                            <div class="seat"><input type="checkbox" name="seat7" value="7" /></div>
-                            <div class="seat"><input type="checkbox" name="seat8" value="8" /></div>
-                        </div>
-                    </div>
-                    <div class="containers" style="display: flex; justify-content: center;">
-                        <div class="row-seat" style="display: flex;">
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                        </div>
-                    </div>
-
-                    <div class="containers" style="display: flex; justify-content: center;">
-                        <div class="row-seat" style="display: flex;">
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                        </div>
-                    </div>
-                    <div class="containers" style="display: flex; justify-content: center;">
-                        <div class="row-seat" style="display: flex;">
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat sold"></div>
-                            <div class="seat sold"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                        </div>
-                    </div>
-                    <div class="containers" style="display: flex; justify-content: center;">
-                        <div class="row-seat" style="display: flex;">
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                        </div>
-                    </div>
-                    <div class="containers" style="display: flex; justify-content: center;">
-                        <div class="row-seat" style="display: flex;">
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat sold"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                        </div>
-                    </div>
-                    <div class="containers" style="display: flex; justify-content: center;">
-                        <div class="row-seat" style="display: flex;">
-                            <div class="seat"></div>
-                            <div class="seat sold"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                        </div>
-                    </div>*@
                 </div>
-
-                <p class="text">
-                    You have selected <span id="count">0</span> seat for a price of LV.<span id="total">0</span>
-                </p>
-                
+               
             </body>
         </section>
     </div>

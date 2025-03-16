@@ -10,6 +10,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    List<int> nums = ViewBag.Seats;
 }
 
 <h1>Index</h1>
@@ -45,6 +46,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Showtime.Id)
                 </td>
+
                 <td>
                     @if (signInManager.IsSignedIn(User))
                     {
@@ -55,7 +57,10 @@
                         }
                     }
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Checkout" asp-route-id="@item.Id">Checkout</a>
+                    @if(item.Paid == false)
+                    {
+                        <a asp-action="Checkout" asp-route-id="@item.Id">Checkout</a>
+                    }
                 </td>
             </tr>
         }

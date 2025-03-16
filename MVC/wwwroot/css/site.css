@@ -72,7 +72,9 @@ body {
     border-top-right-radius: 10px;
 }
 
-
+.but {
+    background-color: red;
+}
 
     .seat.selected {
         background-color: #1465d1;

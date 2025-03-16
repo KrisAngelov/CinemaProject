@@ -248,7 +248,7 @@ namespace MVC.Controllers
         public IActionResult CheckOut(int id)
         {
             var ticket = ticketManager.ReadAsync(id);
-
+            
             var options = new SessionCreateOptions
             {
                 SuccessUrl = $"https://localhost:7297/Tickets/OrderConfirmation",
